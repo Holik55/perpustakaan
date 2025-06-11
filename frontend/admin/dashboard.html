@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+<div class="d-flex" id="wrapper">
+  <!-- Sidebar -->
+  <div class="border-end bg-white" id="sidebar-wrapper">
+    <div class="sidebar-heading border-bottom py-4 px-3 fw-bold">Admin Menu</div>
+    <div class="list-group list-group-flush">
+      <a href="#" class="list-group-item list-group-item-action" data-page="crud">📚 CRUD Buku</a>
+      <a href="#" class="list-group-item list-group-item-action" data-page="stok">📦 Stok Buku</a>
+      <a href="#" class="list-group-item list-group-item-action" data-page="peminjaman">🔄 Peminjaman</a>
+    </div>
+  </div>
+
+  <!-- Page Content -->
+  <div id="page-content-wrapper" class="w-100">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom px-4">
+      <button class="btn btn-outline-secondary" id="menu-toggle">☰</button>
+      <span class="ms-3 fw-semibold">Dashboard Admin Perpustakaan</span>
+    </nav>
+
+    <div class="container-fluid p-4" id="mainContent">
+      <h4>Selamat datang, Admin!</h4>
+      <p>Pilih menu di sebelah kiri untuk mengelola data.</p>
+    </div>
+  </div>
+</div>
+
+<script src="js/dashboard.js"></script>
+</body>
+</html>
