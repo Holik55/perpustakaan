@@ -14,122 +14,6 @@ menuItems.forEach((item) => {
   });
 });
 
-function renderPage(page) {
-  switch (page) {
-    case "tambah":
-      mainContent.innerHTML = `
-        <div class="container py-5">
-          <h2 class="mb-4">${isEditMode ? 'Edit Buku' : 'Tambah Buku'}</h2>
-          <form id="formTambahBuku" class="mb-5">
-            <div class="row g-3">
-              <div class="col-md-6">
-                <label for="isbn" class="form-label">ISBN</label>
-                <input type="text" class="form-control" id="isbn" name="isbn" required>
-              </div>
-              <div class="col-md-6">
-                <label for="title" class="form-label">Judul</label>
-                <input type="text" class="form-control" id="title" name="title" required>
-              </div>
-              <div class="col-md-6">
-                <label for="pengarang" class="form-label">Pengarang</label>
-                <input type="text" class="form-control" id="pengarang" name="pengarang" required>
-              </div>
-              <div class="col-md-6">
-                <label for="penerbit" class="form-label">Penerbit</label>
-                <input type="text" class="form-control" id="penerbit" name="penerbit" required>
-              </div>
-              <div class="col-md-4">
-                <label for="thnterbit" class="form-label">Tahun Terbit</label>
-                <input type="number" class="form-control" id="thnterbit" name="thnterbit" required>
-              </div>
-              <div class="col-md-4">
-                <label for="kategori" class="form-label">Kategori</label>
-                <input type="text" class="form-control" id="kategori" name="kategori" required>
-              </div>
-              <div class="col-md-4">
-                <label for="bahasa" class="form-label">Bahasa</label>
-                <input type="text" class="form-control" id="bahasa" name="bahasa" required>
-              </div>
-              <div class="col-md-4">
-                <label for="halaman" class="form-label">Halaman</label>
-                <input type="number" class="form-control" id="halaman" name="halaman" required>
-              </div>
-              <div class="col-md-4">
-                <label for="no_rak" class="form-label">Nomor Rak</label>
-                <input type="text" class="form-control" id="no_rak" name="no_rak" required>
-              </div>
-              <div class="col-md-4">
-                <label for="cover_image_url" class="form-label">Cover Image URL</label>
-                <input type="url" class="form-control" id="cover_image_url" name="cover_image_url" required>
-              </div>
-            </div>
-            <button type="submit" class="btn btn-primary mt-4">${isEditMode ? 'Simpan Perubahan' : 'Tambah Buku'}</button>
-            ${isEditMode ? '<button type="button" class="btn btn-secondary mt-4 ms-2" onclick="cancelEdit()">Batal</button>' : ''}
-          </form>
-
-        </div>
-      `;
-      // Tambahkan event listener untuk form
-      const form = document.getElementById("formTambahBuku");
-      form.addEventListener("submit", handleFormSubmit);
-      // Muat data buku ke tabel
-      loadBooks();
-      break;
-
-    case "peminjaman":
-      mainContent.innerHTML = `
-        <h4>🔄 Peminjaman Buku</h4>
-        <p>Di sini akan ditampilkan daftar peminjaman dan form input peminjaman baru.</p>
-      `;
-      break;
-
-    case "daftar":
-       mainContent.innerHTML = `
-     <div class="container py-5">
-      <h2 class="mb-3">📚 Daftar Buku</h2>
-      <div class="table-responsive">
-        <table class="table table-bordered table-striped">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>ISBN</th>
-              <th>Judul</th>
-              <th>Pengarang</th>
-              <th>Penerbit</th>
-              <th>Tahun</th>
-              <th>Kategori</th>
-              <th>Bahasa</th>
-              <th>Halaman</th>
-              <th>Rak</th>
-              <th>Cover</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="tabelBuku">
-            <!-- Data buku akan dimuat di sini -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-  `;
-  loadBooks();
-  break;
-
-      case "kategori":
-  mainContent.innerHTML = `
-    <div class="container py-5">
-      <h2 class="mb-3">🏷️ Kategori Buku</h2>
-      <p>Fitur kategori masih dalam pengembangan.</p>
-    </div>
-  `;
-  break;
-
-
-    default:
-      mainContent.innerHTML = `<p>Halaman tidak ditemukan.</p>`;
-  }
-}
-
 async function handleFormSubmit(event) {
   event.preventDefault(); // Mencegah reload halaman
   const formData = new FormData(event.target);
@@ -266,5 +150,37 @@ async function deleteBook(id) {
       console.error("Error:", error);
       alert(`Gagal menghapus buku: ${error.message}`);
     }
+  }
+}
+
+// Tombol logout
+document.getElementById("logoutBtn").addEventListener("click", function (e) {
+  e.preventDefault();
+
+  if (confirm("Yakin ingin logout?")) {
+    // Contoh: hapus token dari localStorage (jika kamu pakai JWT)
+    localStorage.removeItem("token");
+
+    // Redirect ke halaman login
+    window.location.href = "../login.html";
+  }
+});
+
+async function loadDashboardStats() {
+  try {
+    const [booksRes, loansRes] = await Promise.all([
+      fetch("http://localhost:3000/api/books"),
+      fetch("http://localhost:3000/api/loans")
+    ]);
+    const books = await booksRes.json();
+    const loans = await loansRes.json();
+
+    const kategoriSet = new Set(books.map(b => b.kategori));
+
+    document.getElementById("totalBuku").textContent = books.length;
+    document.getElementById("totalPeminjaman").textContent = loans.length;
+    document.getElementById("totalKategori").textContent = kategoriSet.size;
+  } catch (error) {
+    console.error("Gagal memuat statistik:", error);
   }
 }
