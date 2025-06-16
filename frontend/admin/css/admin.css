@@ -1,18 +1,27 @@
 #wrapper {
   display: flex;
   width: 100%;
-}
-
-#sidebar-wrapper {
-  width: 250px;
   min-height: 100vh;
-  transition: margin 0.3s ease-out;
 }
 
-#page-content-wrapper {
-  flex: 1;
+#sidebar {
+  width: 250px;
+  background-color: #343a40;
+  transition: all 0.3s ease;
+  min-height: 100vh;
 }
 
-#wrapper.toggled #sidebar-wrapper {
+#wrapper.toggled #sidebar {
   margin-left: -250px;
+}
+
+#sidebar .nav-link {
+  padding: 12px 20px;
+  transition: background 0.2s ease;
+}
+
+#sidebar .nav-link:hover,
+#sidebar .nav-link.active {
+  background-color: #495057;
+  color: #fff;
 }

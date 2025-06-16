@@ -3,32 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <title>Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
   <link rel="stylesheet" href="css/admin.css" />
 </head>
 <body>
 
 <div class="d-flex" id="wrapper">
   <!-- Sidebar -->
-  <div class="border-end bg-white" id="sidebar-wrapper">
-    <div class="sidebar-heading border-bottom py-4 px-3 fw-bold">Admin Menu</div>
-    <div class="list-group list-group-flush">
-      <a href="#" class="list-group-item list-group-item-action" data-page="crud">📚 CRUD Buku</a>
-      <a href="#" class="list-group-item list-group-item-action" data-page="stok">📦 Stok Buku</a>
-      <a href="#" class="list-group-item list-group-item-action" data-page="peminjaman">🔄 Peminjaman</a>
-    </div>
-  </div>
+  <nav id="sidebar" class="bg-dark text-white">
+    <div class="sidebar-header text-center py-4 fw-bold fs-5 border-bottom">📚 Perpus Admin</div>
+    <ul class="nav flex-column px-2">
+      <li class="nav-item">
+        <a href="#" class="nav-link text-white" data-page="tambah"><i class="bi bi-plus-circle"></i> Tambah Buku</a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link text-white" data-page="peminjaman"><i class="bi bi-arrow-left-right"></i> Peminjaman</a>
+      </li>
+    </ul>
+  </nav>
 
   <!-- Page Content -->
-  <div id="page-content-wrapper" class="w-100">
+  <div id="page-content-wrapper" class="flex-grow-1">
     <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom px-4">
       <button class="btn btn-outline-secondary" id="menu-toggle">☰</button>
-      <span class="ms-3 fw-semibold">Dashboard Admin Perpustakaan</span>
+      <span class="ms-3 fw-semibold">Dashboard Admin</span>
     </nav>
 
     <div class="container-fluid p-4" id="mainContent">
-      <h4>Selamat datang, Admin!</h4>
-      <p>Pilih menu di sebelah kiri untuk mengelola data.</p>
+      <h4>Selamat Datang Admin!</h4>
+      <p>Pilih menu di samping kiri untuk mulai mengelola data.</p>
     </div>
   </div>
 </div>
