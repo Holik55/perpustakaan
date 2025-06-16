@@ -67,30 +67,6 @@ function renderPage(page) {
             ${isEditMode ? '<button type="button" class="btn btn-secondary mt-4 ms-2" onclick="cancelEdit()">Batal</button>' : ''}
           </form>
 
-          <h2 class="mb-3">Daftar Buku</h2>
-          <div class="table-responsive">
-            <table class="table table-bordered table-striped">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>ISBN</th>
-                  <th>Judul</th>
-                  <th>Pengarang</th>
-                  <th>Penerbit</th>
-                  <th>Tahun</th>
-                  <th>Kategori</th>
-                  <th>Bahasa</th>
-                  <th>Halaman</th>
-                  <th>Rak</th>
-                  <th>Cover</th>
-                  <th>Aksi</th>
-                </tr>
-              </thead>
-              <tbody id="tabelBuku">
-                <!-- Data akan dimuat lewat JS -->
-              </tbody>
-            </table>
-          </div>
         </div>
       `;
       // Tambahkan event listener untuk form
@@ -106,6 +82,48 @@ function renderPage(page) {
         <p>Di sini akan ditampilkan daftar peminjaman dan form input peminjaman baru.</p>
       `;
       break;
+
+    case "daftar":
+       mainContent.innerHTML = `
+     <div class="container py-5">
+      <h2 class="mb-3">📚 Daftar Buku</h2>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>ISBN</th>
+              <th>Judul</th>
+              <th>Pengarang</th>
+              <th>Penerbit</th>
+              <th>Tahun</th>
+              <th>Kategori</th>
+              <th>Bahasa</th>
+              <th>Halaman</th>
+              <th>Rak</th>
+              <th>Cover</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="tabelBuku">
+            <!-- Data buku akan dimuat di sini -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+  loadBooks();
+  break;
+
+      case "kategori":
+  mainContent.innerHTML = `
+    <div class="container py-5">
+      <h2 class="mb-3">🏷️ Kategori Buku</h2>
+      <p>Fitur kategori masih dalam pengembangan.</p>
+    </div>
+  `;
+  break;
+
 
     default:
       mainContent.innerHTML = `<p>Halaman tidak ditemukan.</p>`;
