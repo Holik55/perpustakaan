@@ -54,18 +54,69 @@ function renderPage(page) {
         </div>
       `;
       // Tambahkan event listener untuk form
-      const form = document.getElementById("formTambahBuku");
-      form.addEventListener("submit", handleFormSubmit);
+      const formTambah = document.getElementById("formTambahBuku");
+      formTambah.addEventListener("submit", handleFormSubmit);
       // Muat data buku ke tabel
       loadBooks();
       break;
 
     case "peminjaman":
-      mainContent.innerHTML = `
-        <h4>🔄 Peminjaman Buku</h4>
-        <p>Di sini akan ditampilkan daftar peminjaman dan form input peminjaman baru.</p>
-      `;
-      break;
+    mainContent.innerHTML = `
+  <div class="container py-5">
+    <h2 class="mb-3">🔄 Form Peminjaman Buku</h2>
+    <form id="formPeminjaman" class="row g-3 mb-4">
+      <div class="col-md-4">
+        <label for="nisn" class="form-label">NISN</label>
+        <input type="text" class="form-control" id="nisn" required>
+      </div>
+      <div class="col-md-4">
+        <label for="nama" class="form-label">Nama</label>
+        <input type="text" class="form-control" id="nama" required>
+      </div>
+      <div class="col-md-4">
+        <label for="kelas" class="form-label">Kelas</label>
+        <input type="text" class="form-control" id="kelas" required>
+      </div>
+      <div class="col-md-6">
+        <label for="tanggal_pinjam" class="form-label">Tanggal Pinjam</label>
+        <input type="date" class="form-control" id="tanggal_pinjam" required>
+      </div>
+      <div class="col-md-6">
+        <label for="tanggal_kembali" class="form-label">Tanggal Kembali</label>
+        <input type="date" class="form-control" id="tanggal_kembali" required>
+      </div>
+      <div class="col-12">
+        <button type="submit" class="btn btn-success">Simpan</button>
+      </div>
+    </form>
+
+    <h4 class="mb-3">📋 Daftar Peminjaman</h4>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>NISN</th>
+            <th>Nama</th>
+            <th>Kelas</th>
+            <th>Tgl Pinjam</th>
+            <th>Tgl Kembali</th>
+          </tr>
+        </thead>
+        <tbody id="tabelPeminjaman">
+          <!-- Data peminjaman -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+`;
+
+document.getElementById("formPeminjaman").addEventListener("submit", handlePeminjamanSubmit);
+loadPeminjaman();
+
+    break;
+
+
 
     case "daftar":
        mainContent.innerHTML = `
@@ -95,21 +146,21 @@ function renderPage(page) {
         </table>
       </div>
     </div>
-  `;
-  loadBooks();
-  break;
+    `;
+    loadBooks();
+    break;
 
       case "kategori":
-  mainContent.innerHTML = `
+    mainContent.innerHTML = `
     <div class="container py-5">
       <h2 class="mb-3">🏷️ Kategori Buku</h2>
       <p>Fitur kategori masih dalam pengembangan.</p>
     </div>
-  `;
-  break;
+    `;
+    break;
 
-  case "dashboard":
-  mainContent.innerHTML = `
+    case "dashboard":
+    mainContent.innerHTML = `
     <div class="container py-4">
       <h2 class="mb-3">📊 Dashboard</h2>
       <div class="row g-4">
@@ -139,9 +190,9 @@ function renderPage(page) {
         </div>
       </div>
     </div>
-  `;
-  loadDashboardStats();
-  break;
+    `;
+    loadDashboardStats();
+    break;
 
 
 

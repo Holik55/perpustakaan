@@ -184,3 +184,57 @@ async function loadDashboardStats() {
     console.error("Gagal memuat statistik:", error);
   }
 }
+
+//Peminjaman
+async function handlePeminjamanSubmit(e) {
+  e.preventDefault();
+  const data = {
+    nisn: document.getElementById("nisn").value,
+    nama: document.getElementById("nama").value,
+    kelas: document.getElementById("kelas").value,
+    tanggal_pinjam: document.getElementById("tanggal_pinjam").value,
+    tanggal_kembali: document.getElementById("tanggal_kembali").value,
+  };
+
+  try {
+    const res = await fetch("http://localhost:3000/api/loans", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    const result = await res.json();
+    if (!res.ok) throw new Error(result.message || "Gagal simpan");
+
+    alert("Peminjaman berhasil disimpan!");
+    e.target.reset();
+    loadPeminjaman();
+  } catch (err) {
+    console.error(err);
+    alert("Gagal menyimpan peminjaman");
+  }
+}
+
+async function loadPeminjaman() {
+  try {
+    const res = await fetch("http://localhost:3000/api/loans");
+    const data = await res.json();
+    const tbody = document.getElementById("tabelPeminjaman");
+    tbody.innerHTML = data
+      .map((d) => `
+        <tr>
+          <td>${d.id}</td>
+          <td>${d.nisn}</td>
+          <td>${d.nama}</td>
+          <td>${d.kelas}</td>
+          <td>${d.tanggal_pinjam}</td>
+          <td>${d.tanggal_kembali}</td>
+        </tr>
+      `)
+      .join("");
+  } catch (err) {
+    console.error(err);
+    alert("Gagal memuat data peminjaman");
+  }
+}
+
+////////
