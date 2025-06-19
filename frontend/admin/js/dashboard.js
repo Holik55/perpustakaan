@@ -227,22 +227,48 @@ async function loadPeminjaman() {
     const res = await fetch("http://localhost:3000/api/loans");
     const data = await res.json();
     const tbody = document.getElementById("tabelPeminjaman");
-    tbody.innerHTML = data
-      .map((d) => `
-        <tr>
-          <td>${d.id}</td>
-          <td>${d.nisn}</td>
-          <td>${d.nama}</td>
-          <td>${d.kelas}</td>
-          <td>${d.tanggal_pinjam}</td>
-          <td>${d.tanggal_kembali}</td>
-        </tr>
-      `)
-      .join("");
+
+    tbody.innerHTML = data.map((d) => `
+      <tr>
+        <td>${d.id}</td>
+        <td>${d.nisn}</td>
+        <td>${d.nama}</td>
+        <td>${d.kelas}</td>
+        <td>${d.tanggal_pinjam}</td>
+        <td>${d.tanggal_kembali}</td>
+        <td>${d.return_date ? "Sudah" : "Belum"}</td>
+        <td>
+          ${!d.return_date
+            ? `<button class="btn btn-sm btn-success" onclick="konfirmasiPengembalian(${d.id})">Tandai Sudah</button>`
+            : `<span class="text-muted">Selesai</span>`
+          }
+        </td>
+      </tr>
+    `).join("");
   } catch (err) {
     console.error(err);
     alert("Gagal memuat data peminjaman");
   }
 }
-
-////////
+//////////////////////////////////
+// dashboard.js
+async function konfirmasiPengembalian(id) {
+  if (confirm("Yakin ingin menandai peminjaman ini sebagai sudah dikembalikan?")) {
+    try {
+      const response = await fetch(`http://localhost:3000/api/loans/${id}/return`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ return_date: new Date().toISOString().split("T")[0] }), // Set tanggal pengembalian ke hari ini
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.message || "Gagal menandai pengembalian");
+      alert("Peminjaman berhasil ditandai sebagai sudah dikembalikan!");
+      loadPeminjaman(); // Perbarui tabel peminjaman
+    } catch (error) {
+      console.error("Error:", error);
+      alert(`Gagal menandai pengembalian: ${error.message}`);
+    }
+  }
+}

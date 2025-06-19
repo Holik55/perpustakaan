@@ -113,6 +113,33 @@
   loadPeminjaman();
 
       break;
+case "peminjam":
+  mainContent.innerHTML = `
+    <div class="container py-5">
+      <h2 class="mb-3">📋 Daftar Peminjam</h2>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>NISN</th>
+              <th>Nama</th>
+              <th>Kelas</th>
+              <th>Tgl Pinjam</th>
+              <th>Tgl Kembali</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="tabelPeminjaman">
+            <!-- Data peminjam dimuat di sini -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+  loadPeminjaman(); // gunakan fungsi yang sudah ada
+  break;
 
 
 
@@ -152,7 +179,8 @@
       case "dashboard":
       mainContent.innerHTML = `
       <div class="container py-4">
-        <h2 class="mb-3">📊 Dashboard</h2>
+        <h2 class="mb-3"><i class="bi bi-graph-up"></i> Dashboard</h2>
+
         <div class="row g-4">
           <div class="col-md-4">
             <div class="card shadow-sm border-0">

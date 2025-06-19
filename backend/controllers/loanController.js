@@ -1,3 +1,4 @@
+// loanController.js
 const db = require('../db');
 
 // GET /api/loans
@@ -21,5 +22,20 @@ exports.createLoan = (req, res) => {
   db.query(sql, values, (err, result) => {
     if (err) return res.status(500).json({ message: 'Gagal menyimpan data', error: err.message });
     res.status(201).json({ message: 'Data berhasil disimpan', id: result.insertId });
+  });
+};
+
+// PUT /api/loans/:id/return
+exports.returnLoan = (req, res) => {
+  const { id } = req.params;
+  const { return_date } = req.body;
+
+  const sql = `UPDATE loans SET return_date = ? WHERE id = ?`;
+  const values = [return_date, id];
+
+  db.query(sql, values, (err, result) => {
+    if (err) return res.status(500).json({ message: 'Gagal menandai pengembalian', error: err.message });
+    if (result.affectedRows === 0) return res.status(404).json({ message: 'Peminjaman tidak ditemukan' });
+    res.json({ message: 'Peminjaman berhasil ditandai sebagai dikembalikan' });
   });
 };
