@@ -64,6 +64,14 @@ async function handleFormSubmit(event) {
   }
 }
 
+function getDriveImageUrl(originalUrl) {
+  const match = originalUrl.match(/\/d\/(.+?)\//);
+  if (match && match[1]) {
+    return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+  }
+  return originalUrl; // fallback kalau bukan link Google Drive
+}
+
 async function loadBooks() {
   try {
     const response = await fetch("http://localhost:3000/api/books");
@@ -72,6 +80,7 @@ async function loadBooks() {
     tabelBuku.innerHTML = books.map((book) => `
       <tr>
         <td>${book.id}</td>
+        <td><img src="${getDriveImageUrl(book.cover_image_url)}" alt="Cover" width="50"></td>
         <td>${book.isbn}</td>
         <td>${book.title}</td>
         <td>${book.pengarang}</td>
@@ -81,7 +90,6 @@ async function loadBooks() {
         <td>${book.bahasa}</td>
         <td>${book.halaman}</td>
         <td>${book.no_rak}</td>
-        <td><img src="${book.cover_image_url}" alt="Cover" width="50"></td>
         <td>
           <button class="btn btn-sm btn-warning" onclick="editBook(${book.id})">Edit</button>
           <button class="btn btn-sm btn-danger" onclick="deleteBook(${book.id})">Hapus</button>
@@ -89,8 +97,7 @@ async function loadBooks() {
       </tr>
     `).join("");
   } catch (error) {
-    console.error("Gagal memuat buku:", error);
-    alert("Gagal memuat daftar buku.");
+    console.error("Error loading books:", error);
   }
 }
 
@@ -109,16 +116,17 @@ async function editBook(id) {
 
     // Isi form dengan data buku
     const form = document.getElementById("formTambahBuku");
-    form.querySelector("#isbn").value = book.isbn;
-    form.querySelector("#title").value = book.title;
-    form.querySelector("#pengarang").value = book.pengarang;
-    form.querySelector("#penerbit").value = book.penerbit;
-    form.querySelector("#thnterbit").value = book.thnterbit;
-    form.querySelector("#kategori").value = book.kategori;
-    form.querySelector("#bahasa").value = book.bahasa;
-    form.querySelector("#halaman").value = book.halaman;
-    form.querySelector("#no_rak").value = book.no_rak;
     form.querySelector("#cover_image_url").value = book.cover_image_url;
+form.querySelector("#isbn").value = book.isbn;
+form.querySelector("#title").value = book.title;
+form.querySelector("#pengarang").value = book.pengarang;
+form.querySelector("#penerbit").value = book.penerbit;
+form.querySelector("#thnterbit").value = book.thnterbit;
+form.querySelector("#kategori").value = book.kategori;
+form.querySelector("#bahasa").value = book.bahasa;
+form.querySelector("#halaman").value = book.halaman;
+form.querySelector("#no_rak").value = book.no_rak;
+value = book.cover_image_url;
 
     // Scroll ke form untuk UX yang lebih baik
     form.scrollIntoView({ behavior: "smooth" });

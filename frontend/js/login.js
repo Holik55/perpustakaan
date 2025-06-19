@@ -16,8 +16,6 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     const data = await res.json();
 
     if (res.ok) {
-      alert(data.message);
-      alert(data.message);
       window.location.href = 'admin/dashboard.html';
     } else {
       alert(data.message || 'Login gagal');
