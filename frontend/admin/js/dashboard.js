@@ -264,7 +264,7 @@ async function konfirmasiPengembalian(id) {
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.message || "Gagal menandai pengembalian");
-      alert("Peminjaman berhasil ditandai sebagai sudah dikembalikan!");
+      // alert("Peminjaman berhasil ditandai sebagai sudah dikembalikan!");
       loadPeminjaman(); // Perbarui tabel peminjaman
     } catch (error) {
       console.error("Error:", error);
@@ -272,3 +272,4 @@ async function konfirmasiPengembalian(id) {
     }
   }
 }
+

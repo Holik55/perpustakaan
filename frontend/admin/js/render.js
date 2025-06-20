@@ -87,30 +87,10 @@
           <button type="submit" class="btn btn-success">Simpan</button>
         </div>
       </form>
-
-      <h4 class="mb-3">📋 Daftar Peminjaman</h4>
-      <div class="table-responsive">
-        <table class="table table-bordered table-striped">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>NISN</th>
-              <th>Nama</th>
-              <th>Kelas</th>
-              <th>Tgl Pinjam</th>
-              <th>Tgl Kembali</th>
-            </tr>
-          </thead>
-          <tbody id="tabelPeminjaman">
-            <!-- Data peminjaman -->
-          </tbody>
-        </table>
-      </div>
-    </div>
   `;
 
   document.getElementById("formPeminjaman").addEventListener("submit", handlePeminjamanSubmit);
-  loadPeminjaman();
+  // loadPeminjaman();
 
       break;
 case "peminjam":
