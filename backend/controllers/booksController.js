@@ -40,14 +40,14 @@ exports.searchBooks = (req, res) => {
 exports.createBook = (req, res) => {
     const {
         isbn, title, pengarang, penerbit, thnterbit,
-        kategori, bahasa, halaman, no_rak, cover_image_url
+        kategori, bahasa, halaman, no_rak, cover_image_url, stok
     } = req.body;
 
     db.query(
         `INSERT INTO books
-         (isbn, title, pengarang, penerbit, thnterbit, kategori, bahasa, halaman, no_rak, cover_image_url)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [isbn, title, pengarang, penerbit, thnterbit, kategori, bahasa, halaman, no_rak, cover_image_url],
+        (isbn, title, pengarang, penerbit, thnterbit, kategori, bahasa, halaman, no_rak, cover_image_url, stok)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [isbn, title, pengarang, penerbit, thnterbit, kategori, bahasa, halaman, no_rak, cover_image_url, stok],
         (err, result) => {
             if (err) return res.status(500).json({ error: err });
             res.json({ message: 'Book created successfully', bookId: result.insertId });
@@ -60,22 +60,20 @@ exports.updateBook = (req, res) => {
     const { id } = req.params;
     const {
         isbn, title, pengarang, penerbit, thnterbit,
-        kategori, bahasa, halaman, no_rak, cover_image_url
+        kategori, bahasa, halaman, no_rak, cover_image_url, stok
     } = req.body;
 
     db.query(
         `UPDATE books SET
          isbn = ?, title = ?, pengarang = ?, penerbit = ?, thnterbit = ?,
-         kategori = ?, bahasa = ?, halaman = ?, no_rak = ?, cover_image_url = ?
+         kategori = ?, bahasa = ?, halaman = ?, no_rak = ?, cover_image_url = ?, stok = ?
          WHERE id = ?`,
-        [isbn, title, pengarang, penerbit, thnterbit, kategori, bahasa, halaman, no_rak, cover_image_url, id],
+        [isbn, title, pengarang, penerbit, thnterbit, kategori, bahasa, halaman, no_rak, cover_image_url, stok, id],
         (err, result) => {
             if (err) return res.status(500).json({ error: err });
-
             if (result.affectedRows === 0) {
                 return res.status(404).json({ message: 'Book not found' });
             }
-
             res.json({ message: 'Book updated successfully' });
         }
     );
@@ -86,11 +84,9 @@ exports.deleteBook = (req, res) => {
     const { id } = req.params;
     db.query('DELETE FROM books WHERE id = ?', [id], (err, result) => {
         if (err) return res.status(500).json({ error: err });
-
         if (result.affectedRows === 0) {
             return res.status(404).json({ message: 'Book not found' });
         }
-
         res.json({ message: 'Book deleted successfully' });
     });
 };
