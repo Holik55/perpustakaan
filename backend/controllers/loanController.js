@@ -11,19 +11,20 @@ exports.getLoans = (req, res) => {
 
 // POST /api/loans
 exports.createLoan = (req, res) => {
-  const { nisn, nama, kelas, tanggal_pinjam, tanggal_kembali } = req.body;
+  const { nisn, nama, kelas, tanggal_pinjam, tanggal_kembali, judul_buku } = req.body;
 
   const sql = `
-    INSERT INTO loans (nisn, nama, kelas, tanggal_pinjam, tanggal_kembali)
-    VALUES (?, ?, ?, ?, ?)
+    INSERT INTO loans (nisn, nama, kelas, tanggal_pinjam, tanggal_kembali, judul_buku)
+    VALUES (?, ?, ?, ?, ?, ?)
   `;
-  const values = [nisn, nama, kelas, tanggal_pinjam, tanggal_kembali];
+  const values = [nisn, nama, kelas, tanggal_pinjam, tanggal_kembali, judul_buku];
 
   db.query(sql, values, (err, result) => {
     if (err) return res.status(500).json({ message: 'Gagal menyimpan data', error: err.message });
     res.status(201).json({ message: 'Data berhasil disimpan', id: result.insertId });
   });
 };
+
 
 // PUT /api/loans/:id/return
 exports.returnLoan = (req, res) => {
