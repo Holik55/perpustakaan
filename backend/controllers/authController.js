@@ -3,13 +3,20 @@ const User = require('../models/User');
 // REGISTER
 exports.register = async (req, res) => {
   const { username, password } = req.body;
+
   try {
+    const existingUser = await User.findOne({ where: { username } });
+    if (existingUser) {
+      return res.status(409).json({ message: 'Username sudah digunakan' });
+    }
+
     await User.create({ username, password });
     res.json({ message: 'User registered successfully' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 // LOGIN
 exports.login = async (req, res) => {
