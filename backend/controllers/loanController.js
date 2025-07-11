@@ -1,42 +1,36 @@
-// loanController.js
-const db = require('../db');
+const Loan = require('../models/Loan');
 
-// GET /api/loans
-exports.getLoans = (req, res) => {
-  db.query('SELECT * FROM loans', (err, results) => {
-    if (err) return res.status(500).json({ message: 'Gagal mengambil data', error: err.message });
-    res.json(results);
-  });
+// GET all loans
+exports.getLoans = async (req, res) => {
+  try {
+    const loans = await Loan.findAll();
+    res.json(loans);
+  } catch (err) {
+    res.status(500).json({ message: 'Gagal mengambil data', error: err.message });
+  }
 };
 
-// POST /api/loans
-exports.createLoan = (req, res) => {
-  const { nisn, nama, kelas, tanggal_pinjam, tanggal_kembali, judul_buku } = req.body;
-
-  const sql = `
-    INSERT INTO loans (nisn, nama, kelas, tanggal_pinjam, tanggal_kembali, judul_buku)
-    VALUES (?, ?, ?, ?, ?, ?)
-  `;
-  const values = [nisn, nama, kelas, tanggal_pinjam, tanggal_kembali, judul_buku];
-
-  db.query(sql, values, (err, result) => {
-    if (err) return res.status(500).json({ message: 'Gagal menyimpan data', error: err.message });
-    res.status(201).json({ message: 'Data berhasil disimpan', id: result.insertId });
-  });
+// CREATE loan
+exports.createLoan = async (req, res) => {
+  try {
+    const loan = await Loan.create(req.body);
+    res.status(201).json({ message: 'Data berhasil disimpan', id: loan.id });
+  } catch (err) {
+    res.status(500).json({ message: 'Gagal menyimpan data', error: err.message });
+  }
 };
 
-
-// PUT /api/loans/:id/return
-exports.returnLoan = (req, res) => {
-  const { id } = req.params;
+// RETURN loan
+exports.returnLoan = async (req, res) => {
   const { return_date } = req.body;
-
-  const sql = `UPDATE loans SET return_date = ? WHERE id = ?`;
-  const values = [return_date, id];
-
-  db.query(sql, values, (err, result) => {
-    if (err) return res.status(500).json({ message: 'Gagal menandai pengembalian', error: err.message });
-    if (result.affectedRows === 0) return res.status(404).json({ message: 'Peminjaman tidak ditemukan' });
+  try {
+    const [updated] = await Loan.update(
+      { return_date },
+      { where: { id: req.params.id } }
+    );
+    if (updated === 0) return res.status(404).json({ message: 'Peminjaman tidak ditemukan' });
     res.json({ message: 'Peminjaman berhasil ditandai sebagai dikembalikan' });
-  });
+  } catch (err) {
+    res.status(500).json({ message: 'Gagal menandai pengembalian', error: err.message });
+  }
 };
