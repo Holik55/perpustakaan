@@ -14,8 +14,12 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/books', booksRoutes);
 app.use('/api', loanRoutes);
+app.get("/", (req, res) => {
+    res.json({message: "ping succesfully"})
+})
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
