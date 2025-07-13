@@ -2,42 +2,20 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../sequelize');
 
 const Book = sequelize.define('Book', {
-  isbn: {
-    type: DataTypes.STRING,
-  },
-  title: {
-    type: DataTypes.STRING,
-  },
-  pengarang: {
-    type: DataTypes.STRING,
-  },
-  penerbit: {
-    type: DataTypes.STRING,
-  },
-  thnterbit: {
-    type: DataTypes.STRING,
-  },
-  kategori: {
-    type: DataTypes.STRING,
-  },
-  bahasa: {
-    type: DataTypes.STRING,
-  },
-  halaman: {
-    type: DataTypes.INTEGER,
-  },
-  no_rak: {
-    type: DataTypes.STRING,
-  },
-  cover_image_url: {
-    type: DataTypes.STRING,
-  },
-      stok: {
-    type: DataTypes.INTEGER,
-  }
+  isbn: DataTypes.STRING,
+  title: DataTypes.STRING,
+  pengarang: DataTypes.STRING,
+  penerbit: DataTypes.STRING,
+  thnterbit: DataTypes.STRING,
+  kategori: DataTypes.STRING,
+  bahasa: DataTypes.STRING,
+  halaman: DataTypes.INTEGER,
+  no_rak: DataTypes.STRING,
+  cover_image_url: DataTypes.STRING,
+  stok: DataTypes.INTEGER,
 }, {
   tableName: 'books',
-  timestamps: false,
+  timestamps: true, // ⬅️ aktifkan fitur otomatis createdAt & updatedAt
 });
 
 module.exports = Book;

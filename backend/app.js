@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -6,9 +7,10 @@ const authRoutes = require('./routes/auth');
 const booksRoutes = require('./routes/books');
 const loanRoutes = require('./routes/loanRoutes');
 const sequelize = require('./sequelize');
-sequelize.sync().then(() => {
+sequelize.sync({ alter: true }).then(() => {
   console.log('✅ All models synced');
 });
+
 
 const app = express();
 app.use(cors());
