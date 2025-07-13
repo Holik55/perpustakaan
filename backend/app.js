@@ -13,7 +13,13 @@ sequelize.sync({ alter: true }).then(() => {
 
 
 const app = express();
-app.use(cors());
+const cors = require('cors');
+
+app.use(cors({
+  origin: 'https://yourapp.vercel.app', // ganti dengan domain Vercel kamu
+  credentials: true
+}));
+
 app.use(bodyParser.json());
 app.use(express.json());
 
