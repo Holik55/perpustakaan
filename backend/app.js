@@ -16,7 +16,7 @@ const app = express();
 const cors = require('cors');
 
 app.use(cors({
-  origin: 'https://yourapp.vercel.app', // ganti dengan domain Vercel kamu
+  origin: 'https://perpusfrontend-gules.vercel.app', // ganti dengan domain Vercel kamu
   credentials: true
 }));
 
