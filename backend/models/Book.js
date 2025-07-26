@@ -2,16 +2,16 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../sequelize');
 
 const DDC_MAPPING = {
-  'Komputer': '000',
-  'Buku Pelajaran': '100',
+  'Karya Umum': '000',
+  'Filsafat dan Psikologi': '100',
   'Agama': '200',
-  'Fiksi': '300',
-  'Budaya': '400',
-  'Sains': '500',
+  'Ilmu Sosial': '300',
+  'Bahasa': '400',
+  'Ilmu Alam dan Matematika': '500',
   'Teknologi': '600',
-  'Bahasa': '700',
-  'Edukasi': '800',
-  'Sejarah': '900'
+  'Kesenian dan Rekreasi': '700',
+  'Sastra': '800',
+  'Sejarah dan Geografi': '900'
 };
 
 const Book = sequelize.define('Book', {
