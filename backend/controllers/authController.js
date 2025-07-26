@@ -1,45 +1,55 @@
-const db = require('../db');
+const User = require('../models/User');
 
-exports.register = (req, res) => {
-    const { username, password } = req.body;
-    db.query(
-        'INSERT INTO users (username, password) VALUES (?, ?)',
-        [username, password],
-        (err, result) => {
-            if (err) return res.status(500).json({ error: err });
-            res.json({ message: 'User registered successfully' });
-        }
-    );
+// REGISTER
+exports.register = async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const existingUser = await User.findOne({ where: { username } });
+    if (existingUser) {
+      return res.status(409).json({ message: 'Username sudah digunakan' });
+    }
+
+    await User.create({ username, password });
+    res.json({ message: 'User registered successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
-exports.login = (req, res) => {
-    const { username, password } = req.body;
-    db.query(
-        'SELECT * FROM users WHERE username = ? AND password = ?',
-        [username, password],
-        (err, results) => {
-            if (err) return res.status(500).json({ error: err });
-            if (results.length === 0) {
-                return res.status(401).json({ message: 'Invalid credentials' });
-            }
-            res.json({ message: 'Login successful' });
-        }
-    );
+
+// LOGIN
+exports.login = async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const user = await User.findOne({ where: { username, password } });
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+    res.json({ message: 'Login successful' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
+// LOGOUT
 exports.logout = (req, res) => {
-    // Tanpa session/jwt, logout di sisi client saja
-    res.json({ message: 'Logout successful' });
+  res.json({ message: 'Logout successful' });
 };
 
-exports.resetPassword = (req, res) => {
-    const { username, newPassword } = req.body;
-    db.query(
-        'UPDATE users SET password = ? WHERE username = ?',
-        [newPassword, username],
-        (err, result) => {
-            if (err) return res.status(500).json({ error: err });
-            res.json({ message: 'Password reset successful' });
-        }
+// RESET PASSWORD
+exports.resetPassword = async (req, res) => {
+  const { username, newPassword } = req.body;
+  try {
+    const [updated] = await User.update(
+      { password: newPassword },
+      { where: { username } }
     );
+    if (updated === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json({ message: 'Password reset successful' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
