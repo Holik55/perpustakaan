@@ -6,11 +6,11 @@ const sequelize = process.env.MYSQL_URL
   ? new Sequelize(process.env.MYSQL_URL, {
       dialect: 'mysql',
       logging: false,
-      dialectOptions: {
-        ssl: {
-          rejectUnauthorized: false
-        }
-      }
+      // dialectOptions: {
+      //   ssl: {
+      //     rejectUnauthorized: false
+      //   }
+      // }
     })
   : new Sequelize(
       // Opsi 2: Menggunakan individual variables
@@ -22,11 +22,11 @@ const sequelize = process.env.MYSQL_URL
         port: process.env.MYSQLPORT || 3306,
         dialect: 'mysql',
         logging: false,
-        dialectOptions: {
-          ssl: {
-            rejectUnauthorized: false
-          }
-        }
+        // dialectOptions: {
+        //   ssl: {
+        //     rejectUnauthorized: false
+        //   }
+        // }
       }
     );
 

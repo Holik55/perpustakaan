@@ -14,11 +14,11 @@ sequelize.sync({ alter: true }).then(() => {
 
 const app = express();
 
-app.use(cors({
-  origin: 'https://perpusfrontend-gules.vercel.app', // ganti dengan domain Vercel kamu
-  credentials: true
-}));
-
+// app.use(cors({
+//   origin: 'https://perpusfrontend-gules.vercel.app', // ganti dengan domain Vercel kamu
+//   credentials: true
+// }));
+app.use(cors());
 app.use(bodyParser.json());
 app.use(express.json());
 

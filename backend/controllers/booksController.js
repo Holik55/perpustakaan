@@ -1,4 +1,5 @@
 const Book = require('../models/Book');
+const { getDDCPrefix } = require('../utils/ddcGenerator');
 
 // GET all books
 exports.getBooks = async (req, res) => {
@@ -13,7 +14,7 @@ exports.getBooks = async (req, res) => {
 // GET book by ID
 exports.getBookById = async (req, res) => {
   try {
-    const book = await Book.findByPk(req.params.id);
+    const book = await Book.findByPk(req.params.ddc);
     if (!book) return res.status(404).json({ message: 'Book not found' });
     res.json(book);
   } catch (err) {
@@ -43,10 +44,41 @@ exports.searchBooks = async (req, res) => {
 // CREATE book
 exports.createBook = async (req, res) => {
   try {
-    const book = await Book.create(req.body);
-    res.status(201).json({ message: 'Book created', bookId: book.id });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    const {
+      isbn, title, pengarang, penerbit, thnterbit,
+      kategori, bahasa, halaman, no_rak,
+      cover_image_url, stok
+    } = req.body;
+
+    // 1. Ambil prefix DDC berdasarkan kategori
+    const ddcPrefix = getDDCPrefix(kategori); // Misalnya "600"
+
+    // 2. Hitung jumlah buku yang sudah ada di kategori tersebut
+    const count = await Book.count({ where: { kategori } });
+
+    // 3. Buat DDC Number → misal "600.001", "600.002"
+    const ddcNumber = `${ddcPrefix}.${String(count + 1).padStart(3, '0')}`;
+
+    // 4. Simpan buku baru
+    const book = await Book.create({
+      isbn,
+      title,
+      pengarang,
+      penerbit,
+      thnterbit,
+      kategori,
+      bahasa,
+      halaman,
+      no_rak,
+      cover_image_url,
+      stok,
+      ddc: ddcNumber
+    });
+
+    res.status(201).json(book);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Gagal menambahkan buku', error });
   }
 };
 
@@ -54,7 +86,7 @@ exports.createBook = async (req, res) => {
 exports.updateBook = async (req, res) => {
   try {
     const [updated] = await Book.update(req.body, {
-      where: { id: req.params.id },
+      where: { ddc: req.params.ddc },
     });
     if (updated === 0) return res.status(404).json({ message: 'Book not found' });
     res.json({ message: 'Book updated successfully' });
@@ -66,7 +98,7 @@ exports.updateBook = async (req, res) => {
 // DELETE book
 exports.deleteBook = async (req, res) => {
   try {
-    const deleted = await Book.destroy({ where: { id: req.params.id } });
+    const deleted = await Book.destroy({ where: { ddc: req.params.ddc } });
     if (deleted === 0) return res.status(404).json({ message: 'Book not found' });
     res.json({ message: 'Book deleted successfully' });
   } catch (err) {
