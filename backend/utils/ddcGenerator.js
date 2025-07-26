@@ -1,12 +1,12 @@
 const categoryToDDC = {
-  'Filsafat': '100',
+  'Buku Pelajaran': '100',
   'Agama': '200',
-  'Ilmu Sosial': '300',
-  'Bahasa': '400',
+  'Fiksi': '300',
+  'Budaya': '400',
   'Sains': '500',
   'Teknologi': '600',
-  'Seni': '700',
-  'Sastra': '800',
+  'Bahasa': '700',
+  'Edukasi': '800',
   'Sejarah': '900'
 };
 
