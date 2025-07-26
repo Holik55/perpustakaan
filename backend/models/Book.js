@@ -3,14 +3,14 @@ const sequelize = require('../sequelize');
 
 const DDC_MAPPING = {
   'Komputer': '000',
-  'Filsafat': '100',
+  'Buku Pelajaran': '100',
   'Agama': '200',
-  'Sosial': '300',
-  'Bahasa': '400',
+  'Fiksi': '300',
+  'Budaya': '400',
   'Sains': '500',
   'Teknologi': '600',
-  'Seni': '700',
-  'Literatur': '800',
+  'Bahasa': '700',
+  'Edukasi': '800',
   'Sejarah': '900'
 };
 
